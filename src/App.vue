@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import Landing from "./Pages/Landing.vue";
 import "./storage"
 </script>
 
 <template>
-    <main class="p-4 bg-gray-600 min-h-svh min-w-svw">
+    <main class="p-4 bg-slate-900 min-h-svh min-w-svw">
         <RouterView />
     </main>
 </template>
