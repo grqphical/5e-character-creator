@@ -11,8 +11,8 @@ const handleDeleteButton = (id: number) => {
 </script>
 
 <template>
-    <div class="w-140 mh-80 m-auto p-4 mt-24 rounded-md shadow-xl bg-white flex flex-col">
-        <h1 class="text-5xl mb-10 font-bold">5e Character Creator</h1>
+    <div class="w-150 mh-90 m-auto p-6 mt-24 rounded-md shadow-xl bg-white flex flex-col">
+        <h1 class="text-5xl mb-10 font-bold">CharacterForge</h1>
         <h2 class="text-3xl" v-if="characterStore.characters.length !== 0">Characters:</h2>
         <div class="py-4 flex flex-col gap-2 min-h-64">
             <div v-if="characterStore.characters.length === 0">Hmm no characters have been created...</div>
@@ -21,7 +21,7 @@ const handleDeleteButton = (id: number) => {
                 <p class="text-lg">{{ character.name }}</p>
                 <RouterLink :to="`/character-sheet/${i}`"
                     class="text-lg px-3 py-2 bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600 ml-auto text-white">
-                    Edit
+                    View
                 </RouterLink>
                 <button class="text-lg px-3 py-2 bg-red-500 rounded-md cursor-pointer hover:bg-red-600 text-white"
                     v-on:click="(_) => handleDeleteButton(i)">

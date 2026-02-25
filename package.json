@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
+    "@unhead/vue": "^2.1.7",
     "dnd-data": "^1.0.0",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.2.1",

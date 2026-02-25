@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '../storage';
+import { useHead } from '@unhead/vue'
 
 const characterStore = useCharacterStore();
 
@@ -8,6 +9,10 @@ const route = useRoute()
 const id = parseInt(route.params.id?.toString()!)
 
 const character = characterStore.characters[id];
+
+useHead({
+    title: `${character?.name} - CharacterForge` || '404 - Character Not Found'
+})
 </script>
 
 <template>

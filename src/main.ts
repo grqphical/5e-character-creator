@@ -7,6 +7,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import CharacterBuilder from './Pages/CharacterBuilder.vue'
 import CharacterSheet from './Pages/CharacterSheet.vue'
 import { createPinia } from 'pinia'
+import { createHead } from '@unhead/vue/client'
 
 const routes = [
     { path: "/", component: Landing },
@@ -22,7 +23,10 @@ export const router = createRouter({
 
 const pinia = createPinia()
 
+const head = createHead()
+
 createApp(App)
     .use(router)
     .use(pinia)
+    .use(head)
     .mount('#app')
