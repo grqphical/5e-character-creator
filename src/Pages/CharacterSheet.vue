@@ -57,7 +57,7 @@ const exportCharacter = () => {
     const exportObject = {
         "_meta": {
             "source": "CharacterForge",
-            "verison": 1,
+            "version": 1,
         },
         "character": character
 
