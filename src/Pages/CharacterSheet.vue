@@ -2,7 +2,6 @@
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '../storage';
 import { useHead } from '@unhead/vue'
-import races from "../Data/races.json"
 
 const characterStore = useCharacterStore();
 
@@ -54,6 +53,27 @@ const getModifierFromAbility = (abilityScore: number): string => {
     return `${sign}${Math.abs(modifier!)}`
 }
 
+const exportCharacter = () => {
+    const exportObject = {
+        "_meta": {
+            "source": "CharacterForge",
+            "verison": 1,
+        },
+        "character": character
+
+    };
+    const jsonString = JSON.stringify(exportObject);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "character.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
 </script>
 
 <template>
@@ -77,7 +97,8 @@ const getModifierFromAbility = (abilityScore: number): string => {
                     character.background }}</h2>
                 <p class="text-xs">Background</p>
             </div>
-            <h2 class="text-lg font-bold"></h2>
+            <button class="text-lg px-2 py-1 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 self-center"
+                @click="exportCharacter">Export</button>
             <div class="flex flex-col">
                 <h2 class="text-lg  font-bold">{{ character?.race }}</h2>
                 <p class="text-xs">Race</p>
