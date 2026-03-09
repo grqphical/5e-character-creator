@@ -33,6 +33,7 @@ const importCharacter = () => {
 
 <template>
     <div class="w-150 mh-90 m-auto p-6 mt-24 rounded-md shadow-xl bg-white flex flex-col">
+        <a href="/"><img src="/logo.webp" alt="logo" width="84" height="84"></a>
         <h1 class="text-5xl mb-10 font-bold">CharacterForge</h1>
         <h2 class="text-3xl" v-if="characterStore.characters.length !== 0">Characters:</h2>
         <div class="py-4 flex flex-col gap-2 min-h-64">
