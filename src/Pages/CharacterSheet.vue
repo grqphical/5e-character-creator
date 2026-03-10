@@ -10,9 +10,11 @@ const id = parseInt(route.params.id?.toString()!)
 
 const character = characterStore.characters[id]!;
 
-useHead({
-    title: `${character?.name} - CharacterForge` || '404 - Character Not Found'
-})
+if (character !== undefined) {
+    useHead({
+        title: `${character?.name} - CharacterForge` || '404 - Character Not Found'
+    })
+}
 
 const abilityToModifierLoookup = new Map<number, number>([
     [1, -5],
@@ -83,7 +85,6 @@ const toggleInspiration = () => {
     character.inspiration = newInspiration;
     characterStore.updateCharacter(id, { ...character, inspiration: newInspiration });
 }
-
 </script>
 
 <template>
@@ -93,142 +94,145 @@ const toggleInspiration = () => {
         </div>
     </div>
 
-    <div class="w-full flex flex-row gap-3">
-        <div class="min-w-90 bg-white rounded-md shadow-xl px-2 flex flex-row items-center gap-2">
-            <a href="/"><img src="/logo.webp" alt="logo" width="64" height="64"></a>
-            <h2 class="font-bold text-3xl">{{ character?.name }}</h2>
+    <div v-if="character !== undefined">
+        <div class="w-full flex flex-row gap-3">
+            <div class=" min-w-90 bg-white rounded-md shadow-xl px-2 flex flex-row items-center gap-2">
+                <a href="/"><img src="/logo.webp" alt="logo" width="64" height="64"></a>
+                <h2 class="font-bold text-3xl">{{ character?.name }}</h2>
+            </div>
+            <div class="w-160 bg-white rounded-md shadow-xl px-2 grid grid-cols-3">
+                <div class="flex flex-col">
+                    <h2 class="text-lg font-bold">{{ `Level ${character?.level} ${character?.class}` }}</h2>
+                    <p class="text-xs">Class/Level</p>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-lg font-bold">{{ character?.background === undefined ? "Undefined" :
+                        character.background }}</h2>
+                    <p class="text-xs">Background</p>
+                </div>
+                <button class="text-lg px-2 py-1 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 self-center"
+                    @click="exportCharacter">Export</button>
+                <div class="flex flex-col">
+                    <h2 class="text-lg  font-bold">{{ character?.race }}</h2>
+                    <p class="text-xs">Race</p>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-lg font-bold">{{ character?.alignment }}</h2>
+                    <p class="text-xs">Alignment</p>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-lg font-bold">{{ character?.xp }}</h2>
+                    <p class="text-xs">XP</p>
+                </div>
+            </div>
         </div>
-        <div class="w-160 bg-white rounded-md shadow-xl px-2 grid grid-cols-3">
-            <div class="flex flex-col">
-                <h2 class="text-lg font-bold">{{ `Level ${character?.level} ${character?.class}` }}</h2>
-                <p class="text-xs">Class/Level</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="text-lg font-bold">{{ character?.background === undefined ? "Undefined" :
-                    character.background }}</h2>
-                <p class="text-xs">Background</p>
-            </div>
-            <button class="text-lg px-2 py-1 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 self-center"
-                @click="exportCharacter">Export</button>
-            <div class="flex flex-col">
-                <h2 class="text-lg  font-bold">{{ character?.race }}</h2>
-                <p class="text-xs">Race</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="text-lg font-bold">{{ character?.alignment }}</h2>
-                <p class="text-xs">Alignment</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="text-lg font-bold">{{ character?.xp }}</h2>
-                <p class="text-xs">XP</p>
-            </div>
-        </div>
-    </div>
-    <div class="flex flex-row h-full mt-2 gap-3">
-        <div class="flex flex-col gap-3">
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.str!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.str }}</p>
-                <p class="font-bold">STR</p>
-            </div>
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.dex!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.dex }}</p>
-                <p class="font-bold">DEX</p>
-            </div>
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.con!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.con }}</p>
-                <p class="font-bold">CON</p>
-            </div>
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.int!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.int }}</p>
-                <p class="font-bold">INT</p>
-            </div>
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.wis!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.wis }}</p>
-                <p class="font-bold">WIS</p>
-            </div>
-            <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                    getModifierFromAbility(character?.stats.cha!) }}
-                </p>
-                <p class="border aspect-square text-center rounded">{{ character?.stats.cha }}</p>
-                <p class="font-bold">CHA</p>
-            </div>
+        <div class="flex flex-row h-full mt-2 gap-3">
+            <div class="flex flex-col gap-3">
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.str!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.str }}</p>
+                    <p class="font-bold">STR</p>
+                </div>
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.dex!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.dex }}</p>
+                    <p class="font-bold">DEX</p>
+                </div>
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.con!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.con }}</p>
+                    <p class="font-bold">CON</p>
+                </div>
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.int!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.int }}</p>
+                    <p class="font-bold">INT</p>
+                </div>
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.wis!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.wis }}</p>
+                    <p class="font-bold">WIS</p>
+                </div>
+                <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
+                        getModifierFromAbility(character?.stats.cha!) }}
+                    </p>
+                    <p class="border aspect-square text-center rounded">{{ character?.stats.cha }}</p>
+                    <p class="font-bold">CHA</p>
+                </div>
 
-        </div>
-        <div class="flex flex-col gap-3">
-            <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
-                <label class="relative flex items-center cursor-pointer text-xl font-bold">
-                    <input type="checkbox" name="inspiration" id="inspiration"
-                        class="peer appearance-none h-12 w-12 border-2 border-black transition-colors rounded"
-                        :checked="character.inspiration" @change="toggleInspiration">
-                    <span
-                        class="absolute w-10 h-10 rounded bg-black top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none cursor-pointer">
-                        <img src="/polar-star.svg" alt="Star">
-                    </span>
-                </label>
-                <span class="font-bold">Inspiration</span>
             </div>
-            <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
-                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
-                    character.proficiency_bonus }}
-                </p>
-                <p class="font-bold">Proficency Bonus</p>
+            <div class="flex flex-col gap-3">
+                <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+                    <label class="relative flex items-center cursor-pointer text-xl font-bold">
+                        <input type="checkbox" name="inspiration" id="inspiration"
+                            class="peer appearance-none h-12 w-12 border-2 border-black transition-colors rounded"
+                            :checked="character.inspiration" @change="toggleInspiration">
+                        <span
+                            class="absolute w-10 h-10 rounded bg-black top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none cursor-pointer">
+                            <img src="/polar-star.svg" alt="Star">
+                        </span>
+                    </label>
+                    <span class="font-bold">Inspiration</span>
+                </div>
+                <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+                    <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
+                        character.proficiency_bonus }}
+                    </p>
+                    <p class="font-bold">Proficency Bonus</p>
+                </div>
             </div>
-        </div>
-        <div class="flex flex-col gap-3">
-            <div class="w-70 bg-white rounded-md shadow-xl p-4 flex flex-row gap-2 items-center justify-between">
+            <div class="flex flex-col gap-3">
+                <div class="w-70 bg-white rounded-md shadow-xl p-4 flex flex-row gap-2 items-center justify-between">
 
-                <div class="flex flex-col items-center gap-1">
-                    <div class="relative flex items-center justify-center w-16 h-16">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-                            <path d="M10,5 
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="relative flex items-center justify-center w-16 h-16">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                <path d="M10,5 
                              L90,5 
                              L90,50 
                              C90,85 50,98 50,98 
                              C50,98 10,85 10,50 
                              Z" fill="none" stroke="black" stroke-width="6" stroke-linejoin="round" />
-                            <text x="50" y="48" text-anchor="middle" dominant-baseline="middle" font-size="36"
-                                font-weight="bold" fill="black">
-                                {{ character.armor_class }}
-                            </text>
-                        </svg>
+                                <text x="50" y="48" text-anchor="middle" dominant-baseline="middle" font-size="36"
+                                    font-weight="bold" fill="black">
+                                    {{ character.armor_class }}
+                                </text>
+                            </svg>
+                        </div>
+                        <p class="text-sm font-bold">AC</p>
                     </div>
-                    <p class="text-sm font-bold">AC</p>
-                </div>
 
-                <div class="flex flex-col items-center gap-1">
-                    <p
-                        class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
-                        {{ character.initiative >= 0 ? "+" : "-" }}{{ character.initiative }}
-                    </p>
-                    <p class="text-sm font-bold">Initiative</p>
-                </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <p
+                            class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
+                            {{ character.initiative >= 0 ? "+" : "-" }}{{ character.initiative }}
+                        </p>
+                        <p class="text-sm font-bold">Initiative</p>
+                    </div>
 
-                <div class="flex flex-col items-center gap-1">
-                    <p
-                        class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
-                        {{ character.speed }}
-                    </p>
-                    <p class="text-sm font-bold">Speed</p>
-                </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <p
+                            class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
+                            {{ character.speed }}
+                        </p>
+                        <p class="text-sm font-bold">Speed</p>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
+
 
 </template>
