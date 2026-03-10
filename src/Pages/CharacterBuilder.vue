@@ -23,6 +23,8 @@ const character = reactive<Character>({
         wis: 0,
     },
     xp: 0,
+    inspiration: false,
+    proficiency_bonus: 0
 } as Character)
 
 const handleSubmit = (e: Event) => {
@@ -48,6 +50,29 @@ let pointBuyPrices: Record<number, number> = {
     13: 5,
     14: 7,
     15: 9
+}
+
+const proficiencyBonusLookup: Record<number, number> = {
+    1: 2,
+    2: 2,
+    3: 2,
+    4: 2,
+    5: 3,
+    6: 3,
+    7: 3,
+    8: 3,
+    9: 4,
+    10: 4,
+    11: 4,
+    12: 4,
+    13: 5,
+    14: 5,
+    15: 5,
+    16: 5,
+    17: 6,
+    18: 6,
+    19: 6,
+    20: 6,
 }
 
 let preBonusStats = reactive({
@@ -108,6 +133,11 @@ const filteredRacialBonuses = computed(() => {
     );
 });
 
+const handleLevelChange = () => {
+    const profBonus = proficiencyBonusLookup[character.level];
+    character.proficiency_bonus = profBonus!;
+}
+
 applyRacialBonuses();
 
 </script>
@@ -143,8 +173,8 @@ applyRacialBonuses();
 
             <div class="flex flex-col gap-1">
                 <label for="level" class="text-xl">Level:</label>
-                <input v-model.number="character.level" type="number" class="bg-gray-200 p-1 rounded-md w-1/3" max="20"
-                    min="1" required>
+                <input v-bind:value="character.level" @change="handleLevelChange" type="number"
+                    class="bg-gray-200 p-1 rounded-md w-1/3" max="20" min="1" required>
             </div>
             <div class="flex flex-col gap-1 mt-4">
                 <label for="abilities" class="text-xl font-bold">Abilities:</label>

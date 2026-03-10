@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@fontsource-variable/noto-serif": "^5.2.9",
     "@tailwindcss/vite": "^4.2.1",
     "@unhead/vue": "^2.1.7",
     "dnd-data": "^1.0.0",

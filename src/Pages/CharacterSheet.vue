@@ -8,7 +8,7 @@ const characterStore = useCharacterStore();
 const route = useRoute()
 const id = parseInt(route.params.id?.toString()!)
 
-const character = characterStore.characters[id];
+const character = characterStore.characters[id]!;
 
 useHead({
     title: `${character?.name} - CharacterForge` || '404 - Character Not Found'
@@ -77,6 +77,11 @@ const exportCharacter = () => {
     URL.revokeObjectURL(url);
 }
 
+const toggleInspiration = () => {
+    character.inspiration = !character.inspiration
+    characterStore.updateCharacter(id, { ...character, inspiration: !character.inspiration });
+}
+
 </script>
 
 <template>
@@ -87,7 +92,7 @@ const exportCharacter = () => {
     </div>
 
     <div class="w-full flex flex-row gap-3">
-        <div class="w-80 bg-white rounded-md shadow-xl px-2 flex flex-row items-center gap-2">
+        <div class="min-w-90 bg-white rounded-md shadow-xl px-2 flex flex-row items-center gap-2">
             <a href="/"><img src="/logo.webp" alt="logo" width="64" height="64"></a>
             <h2 class="font-bold text-3xl">{{ character?.name }}</h2>
         </div>
@@ -117,7 +122,7 @@ const exportCharacter = () => {
             </div>
         </div>
     </div>
-    <div class="flex flex-row h-full mt-2">
+    <div class="flex flex-row h-full mt-2 gap-3">
         <div class="flex flex-col gap-3">
             <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                 <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
@@ -162,6 +167,26 @@ const exportCharacter = () => {
                 <p class="font-bold">CHA</p>
             </div>
 
+        </div>
+        <div class="flex flex-col gap-3">
+            <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+                <label class="relative flex items-center cursor-pointer text-xl font-bold">
+                    <input type="checkbox" name="inspiration" id="inspiration"
+                        class="peer appearance-none h-12 w-12 border-2 border-black transition-colors"
+                        :checked="character.inspiration" @change="toggleInspiration">
+                    <span
+                        class="absolute w-10 h-10 bg-black top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none cursor-pointer">
+                        <img src="/polar-star.svg" alt="Star">
+                    </span>
+                </label>
+                <span>Inspiration</span>
+            </div>
+            <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+                <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
+                    character.proficiency_bonus }}
+                </p>
+                <p class="font-bold">Proficency Bonus</p>
+            </div>
         </div>
     </div>
 
