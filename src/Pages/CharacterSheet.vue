@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '../storage';
+import races from "../Data/races.json"
 import { useHead } from '@unhead/vue'
 
 const characterStore = useCharacterStore();
@@ -47,6 +48,11 @@ const abilityToModifierLoookup = new Map<number, number>([
     [25, 10],
 ])
 
+const race = races.find((value) => value.name === character.race)!
+if (race === undefined) {
+    console.error("Error looking up race data")
+}
+
 const getModifierFromAbility = (abilityScore: number): string => {
     const modifier = abilityToModifierLoookup.get(abilityScore)
     if (modifier === undefined) {
@@ -54,6 +60,14 @@ const getModifierFromAbility = (abilityScore: number): string => {
     }
     const sign = Math.sign(modifier!) === -1 ? "-" : "+"
     return `${sign}${Math.abs(modifier!)}`
+}
+
+const getModifierIntFromAbility = (abilityScore: number): number => {
+    const modifier = abilityToModifierLoookup.get(abilityScore)
+    if (modifier === undefined) {
+        console.error("could not lookup modifier for", abilityScore)
+    }
+    return modifier!;
 }
 
 const exportCharacter = () => {
@@ -173,20 +187,37 @@ const toggleInspiration = () => {
             <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
                 <label class="relative flex items-center cursor-pointer text-xl font-bold">
                     <input type="checkbox" name="inspiration" id="inspiration"
-                        class="peer appearance-none h-12 w-12 border-2 border-black transition-colors"
+                        class="peer appearance-none h-12 w-12 border-2 border-black transition-colors rounded"
                         :checked="character.inspiration" @change="toggleInspiration">
                     <span
-                        class="absolute w-10 h-10 bg-black top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none cursor-pointer">
+                        class="absolute w-10 h-10 rounded bg-black top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none cursor-pointer">
                         <img src="/polar-star.svg" alt="Star">
                     </span>
                 </label>
-                <span>Inspiration</span>
+                <span class="font-bold">Inspiration</span>
             </div>
             <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
                 <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
                     character.proficiency_bonus }}
                 </p>
                 <p class="font-bold">Proficency Bonus</p>
+            </div>
+        </div>
+        <div class="flex flex-col gap-3">
+            <div class="w-70 bg-white rounded-md shadow-xl p-2 flex flex-row gap-4 items-center justify-around">
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl border-2 p-3 rounded">{{ 10 + getModifierIntFromAbility(character.stats.dex) }}
+                    </p>
+                    <p class="text-sm font-bold">AC</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl border-2 p-3 rounded">{{ getModifierFromAbility(character.stats.dex) }}</p>
+                    <p class="text-sm font-bold">Initiative</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl border-2 p-3 rounded">{{ race.speed }}</p>
+                    <p class="text-sm font-bold">Speed</p>
+                </div>
             </div>
         </div>
     </div>
