@@ -81,7 +81,8 @@ const closeError = () => {
                 Character</button>
         </div>
         <p class="mt-4">Made by <a class="underline" href="https://nathanjacobson.ca">Nathan Jacobson</a>. <a
-                class="underline" href="https://github.com">GitHub</a></p>
+                class="underline" href="https://github.com/grqphical/CharacterForge">GitHub</a></p>
+        <p class="italic text-xs">All characters are stored locally in your browser</p>
     </div>
 
 
