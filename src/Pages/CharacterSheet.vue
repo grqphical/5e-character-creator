@@ -48,11 +48,6 @@ const abilityToModifierLoookup = new Map<number, number>([
     [25, 10],
 ])
 
-const race = races.find((value) => value.name === character.race)!
-if (race === undefined) {
-    console.error("Error looking up race data")
-}
-
 const getModifierFromAbility = (abilityScore: number): string => {
     const modifier = abilityToModifierLoookup.get(abilityScore)
     if (modifier === undefined) {
@@ -62,13 +57,6 @@ const getModifierFromAbility = (abilityScore: number): string => {
     return `${sign}${Math.abs(modifier!)}`
 }
 
-const getModifierIntFromAbility = (abilityScore: number): number => {
-    const modifier = abilityToModifierLoookup.get(abilityScore)
-    if (modifier === undefined) {
-        console.error("could not lookup modifier for", abilityScore)
-    }
-    return modifier!;
-}
 
 const exportCharacter = () => {
     const exportObject = {
@@ -206,16 +194,16 @@ const toggleInspiration = () => {
         <div class="flex flex-col gap-3">
             <div class="w-70 bg-white rounded-md shadow-xl p-2 flex flex-row gap-4 items-center justify-around">
                 <div class="flex flex-col items-center">
-                    <p class="text-3xl border-2 p-3 rounded">{{ 10 + getModifierIntFromAbility(character.stats.dex) }}
+                    <p class="text-3xl border-2 p-3 rounded">{{ character.armor_class }}
                     </p>
                     <p class="text-sm font-bold">AC</p>
                 </div>
                 <div class="flex flex-col items-center">
-                    <p class="text-3xl border-2 p-3 rounded">{{ getModifierFromAbility(character.stats.dex) }}</p>
+                    <p class="text-3xl border-2 p-3 rounded">{{ character.initiative }}</p>
                     <p class="text-sm font-bold">Initiative</p>
                 </div>
                 <div class="flex flex-col items-center">
-                    <p class="text-3xl border-2 p-3 rounded">{{ race.speed }}</p>
+                    <p class="text-3xl border-2 p-3 rounded">{{ character.speed }}</p>
                     <p class="text-sm font-bold">Speed</p>
                 </div>
             </div>

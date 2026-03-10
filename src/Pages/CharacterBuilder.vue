@@ -24,8 +24,46 @@ const character = reactive<Character>({
     },
     xp: 0,
     inspiration: false,
-    proficiency_bonus: 0
+    proficiency_bonus: 0,
+    speed: 0,
+    initiative: 0,
+    armor_class: 0,
 } as Character)
+
+
+const abilityToModifierLoookup = new Map<number, number>([
+    [1, -5],
+    [2, -4],
+    [3, -4],
+    [4, -3],
+    [5, -3],
+    [6, -2],
+    [7, -2],
+    [8, -1],
+    [9, -1],
+    [10, 0],
+    [11, 0],
+    [12, 1],
+    [13, 1],
+    [14, 2],
+    [15, 2],
+    [16, 3],
+    [17, 3],
+    [18, 4],
+    [19, 4],
+    [20, 5],
+    [21, 5],
+    [22, 6],
+    [23, 6],
+    [24, 7],
+    [25, 7],
+    [26, 8],
+    [27, 8],
+    [28, 9],
+    [29, 9],
+    [25, 10],
+])
+
 
 const handleSubmit = (e: Event) => {
     e.preventDefault()
@@ -34,6 +72,21 @@ const handleSubmit = (e: Event) => {
         const key = stat as keyof typeof character.stats
         character.stats[key] += value
     })
+
+    character.armor_class = 10 + abilityToModifierLoookup.get(character.stats.dex)!
+
+    const race = races.find((value) => value.name === character.race)!
+    if (race === undefined) {
+        console.error("Error looking up race data")
+    }
+
+    if (typeof (race.speed) === "number") {
+        character.speed = race.speed;
+    } else {
+        character.speed = race.speed?.walk!
+    }
+
+    character.initiative = abilityToModifierLoookup.get(character.stats.dex)!
 
     charactersStore.addCharacter(character)
     const idx = charactersStore.characters.length - 1;
