@@ -290,9 +290,11 @@ applyRacialBonuses();
                     <div v-for="(value, stat) in filteredRacialBonuses" :key="stat">
                         <p v-if="stat !== 'choose'">{{ stat.toUpperCase() }}: {{ value }}</p>
                         <div v-if="stat === 'choose'" class="flex flex-row gap-2">
+                            <!-- @vue-ignore -->
                             <div v-for="i in value.count" :key="i">
                                 <select class="bg-gray-200 p-1 rounded-md" @change="handleDynamicAbilityChange" required="true">
                                     <option value="">Select an ability</option>
+                                    <!-- @vue-ignore -->
                                     <option v-for="ability in value.from" :key="ability" :value="ability">
                                         {{ ability.toUpperCase() }}
                                     </option>
