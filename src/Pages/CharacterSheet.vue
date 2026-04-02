@@ -172,8 +172,8 @@ const toggleInspiration = () => {
                 </div>
 
             </div>
-            <div class="flex flex-col gap-3">
-                <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+            <div class="flex flex-col gap-2">
+                <div class="w-60 bg-white rounded-md shadow-xl p-1 flex flex-row gap-2 items-center">
                     <label class="relative flex items-center cursor-pointer text-xl font-bold">
                         <input type="checkbox" name="inspiration" id="inspiration"
                             class="peer appearance-none h-12 w-12 border-2 border-black transition-colors rounded"
@@ -185,7 +185,7 @@ const toggleInspiration = () => {
                     </label>
                     <span class="font-bold">Inspiration</span>
                 </div>
-                <div class="w-60 bg-white rounded-md shadow-xl p-2 flex flex-row gap-2 items-center">
+                <div class="w-60 bg-white rounded-md shadow-xl p-1 flex flex-row gap-2 items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
                         character.proficiency_bonus }}
                     </p>

@@ -191,6 +191,12 @@ const handleLevelChange = () => {
     character.proficiency_bonus = profBonus!;
 }
 
+const handleDynamicAbilityChange = (payload: Event) => {
+    const target = payload.target as HTMLSelectElement;
+    const selectedAbility = target.value as keyof typeof character.stats;
+    character.stats[selectedAbility] += (character.stats[selectedAbility] > 0 ? 0 : 1);
+}
+
 applyRacialBonuses();
 
 </script>
@@ -282,7 +288,16 @@ applyRacialBonuses();
                 <h3 class="font-bold text-lg">Racial Bonuses:</h3>
                 <div class="flex flex-row gap-1">
                     <div v-for="(value, stat) in filteredRacialBonuses" :key="stat">
-                        <p>{{ stat.toUpperCase() }}: {{ value }}</p>
+                        <p v-if="stat !== 'choose'">{{ stat.toUpperCase() }}: {{ value }}</p>
+                        <div v-if="stat === 'choose'">
+                            <select class="bg-gray-200 p-1 rounded-md" @change="handleDynamicAbilityChange">
+                                <option value="">Select an ability</option>
+                                <option v-for="ability in value.from" :key="ability" :value="ability">
+                                    {{ ability.toUpperCase() }}
+                                </option>
+                            </select>
+                            
+                        </div>
                     </div>
                 </div>
 
