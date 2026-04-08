@@ -10,6 +10,30 @@
                 "*",
                 "*"
             ]
+        },
+        {
+            "name": "Charlatan",
+            "skills": [
+                "Deception",
+                "Sleight of Hand"
+            ],
+            "languages": []
+        },
+        {
+            "name": "Criminal",
+            "skills": [
+                "Deception",
+                "Stealth"
+            ],
+            "languages": []
+        },
+        {
+            "name": "Criminal (Spy)",
+            "skills": [
+                "Deception",
+                "Stealth"
+            ],
+            "languages": []
         }
     ]
 }

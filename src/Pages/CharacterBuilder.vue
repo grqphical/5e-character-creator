@@ -253,7 +253,7 @@ applyRacialBonuses();
             <div class="flex flex-col gap-1">
                 <label for="level" class="text-xl">Background:</label>
                 <select v-model="character.background" class="bg-gray-200 p-1 rounded-md w-1/3" required>
-                    <option value="{{ background.name }}" v-for="background in backgrounds.backgrounds">{{ background.name }}</option>
+                    <option v-for="background in backgrounds.backgrounds" :value="background.name" :key="background.name">{{ background.name }}</option>
                 </select>
             </div>
             <div class="flex flex-col gap-1 mt-4">
