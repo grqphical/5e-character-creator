@@ -1,0 +1,15 @@
+{
+    "backgrounds": [
+        {
+            "name": "Acolyte",
+            "skills": [
+                "Insight",
+                "Religion"
+            ],
+            "languages": [
+                "*",
+                "*"
+            ]
+        }
+    ]
+}

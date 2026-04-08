@@ -2,6 +2,7 @@
 import { computed, reactive } from 'vue' // Import reactive
 import { ClassName, type Character, Alignment } from "../models"
 import races from "../Data/races.json"
+import backgrounds from "../Data/backgrounds.json"
 import { useCharacterStore } from "../storage"
 import { useRouter } from 'vue-router'
 
@@ -247,6 +248,12 @@ applyRacialBonuses();
                     <option value="True Neutral">True Neutral</option>
                     <option value="Lawful Evil">Lawful Evil</option>
                     <option value="Chaotic Evil">Chaotic Evil</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label for="level" class="text-xl">Background:</label>
+                <select v-model="character.background" class="bg-gray-200 p-1 rounded-md w-1/3" required>
+                    <option value="{{ background.name }}" v-for="background in backgrounds.backgrounds">{{ background.name }}</option>
                 </select>
             </div>
             <div class="flex flex-col gap-1 mt-4">
