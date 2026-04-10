@@ -16,5 +16,7 @@ cd dist
 python3 -m http.server
 ```
 
-## License
+## License and Attributions
 CharacterForge is licensed under the MIT license
+
+Some data sourced from [5e.tools](https://5e.tools)
