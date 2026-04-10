@@ -48,7 +48,8 @@ enum Dice {
 interface Attack {
     name: string
     attack_bonus: number
-    damage: string
+    damage_die: Dice
+    dice_count: number
 }
 
 interface Spell {
@@ -92,20 +93,11 @@ export interface Character {
     skin: string
     hair: string
 
-    proficiency_bonus: number
     max_hp: number
     current_hp: number
     temporary_hp: number
-    hit_dice: Dice
-    max_hit_dice: number
     current_hit_dice: number
-    death_saving_throws: Array<boolean>
     inspiration: boolean
-
-    initiative: number
-    speed: number
-    armor_class: number
-
 
     stats: {
         str: number
@@ -116,33 +108,26 @@ export interface Character {
         cha: number
     }
 
-    passive_perception: number
-
-    strength_saving_throw: number
-    dexterity_saving_throw: number
-    constitution_saving_throw: number
-    intelligence_saving_throw: number
-    wisdom_saving_throw: number
-    charisma_saving_throw: number
-
-    acrobatics: number
-    animal_handling: number
-    arcana: number
-    athletics: number
-    deception: number
-    history: number
-    insight: number
-    intimidation: number
-    investigation: number
-    medicine: number
-    nature: number
-    perception: number
-    performance: number
-    persuasion: number
-    religion: number
-    sleight_of_hand: number
-    stealth: number
-    survival: number
+    skill_proficiencies: {
+        acrobatics: boolean
+        animal_handling: boolean
+        arcana: boolean
+        athletics: boolean
+        deception: boolean
+        history: boolean
+        insight: boolean
+        intimidation: boolean
+        investigation: boolean
+        medicine: boolean
+        nature: boolean
+        perception: boolean
+        performance: boolean
+        persuasion: boolean
+        religion: boolean
+        sleight_of_hand: boolean
+        stealth: boolean
+        survival: boolean
+    }
 
     copper: number
     electrum: number
@@ -150,7 +135,7 @@ export interface Character {
     gold: number
     silver: number
 
-    personality_traits: string
+    personality_traits: Array<string>
     ideals: string
     bonds: string
     flaws: string
