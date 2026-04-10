@@ -78,7 +78,6 @@ export default {
             <div v-for="i in value.choose?.count" :key="i">
                 <select class="bg-gray-200 p-1 rounded-md" @change="handleDynamicAbilityChange" required="true">
                     <option value="">Select an ability</option>
-                    <!-- @vue-ignore -->
                     <option v-for="ability in value.choose?.from" :key="ability" :value="ability">
                         {{ ability.toUpperCase() }}
                     </option>

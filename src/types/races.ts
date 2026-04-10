@@ -16,7 +16,7 @@ export interface Race {
         wis?: number;
         cha?: number;
         choose?: {
-            from: Array<String>,
+            from: Array<string>,
             count: number,
         }
     }>;
