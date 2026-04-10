@@ -20,8 +20,8 @@ export default {
     methods: {
         applyRacialBonuses() {
             Object.entries(this.character.stats).forEach(([keyName]) => {
-                const key = keyName as keyof typeof this.character.stats;
-                this.character.stats[key] = 0
+                let key = keyName as keyof typeof this.character.chosen_stats_bonuses;
+                this.character.chosen_stats_bonuses[key] = 0
             })
             const race = this.character.race;
             const raceData = races.find((r) => r.name == race);
@@ -35,7 +35,7 @@ export default {
                             return;
                         }
                         const stat = statName as StatKey;
-                        this.character.stats[stat] = statValue;
+                        this.character.chosen_stats_bonuses[stat] += statValue;
                     })
                 });
             }
@@ -43,16 +43,13 @@ export default {
         handleDynamicAbilityChange(payload: Event) {
             const target = payload.target as HTMLSelectElement;
             const selectedAbility = target.value as StatKey;
-            this.character.stats[selectedAbility] += (this.character.stats[selectedAbility] > 0 ? 0 : 1);
+            this.character.chosen_stats_bonuses[selectedAbility] += (this.character.chosen_stats_bonuses[selectedAbility] > 0 ? 0 : 1);
         }
     },
     computed: {
         currentRace(): Race | undefined {
             return races.find((race) => race.name === this.character.race) as Race | undefined
         }
-    },
-    mounted() {
-        this.applyRacialBonuses();
     }
 }
 </script>

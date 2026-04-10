@@ -108,6 +108,15 @@ export interface Character {
         cha: number
     }
 
+    chosen_stats_bonuses: {
+        str: number
+        dex: number
+        con: number
+        int: number
+        wis: number
+        cha: number
+    }
+
     skill_proficiencies: {
         acrobatics: boolean
         animal_handling: boolean

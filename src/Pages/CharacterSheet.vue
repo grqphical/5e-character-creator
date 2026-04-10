@@ -84,6 +84,11 @@ const getModifierFromAbility = (abilityScore: number): string => {
     return `${sign}${Math.abs(modifier!)}`
 }
 
+const getAbility = (name: string): number | undefined => {
+    const key = name as keyof typeof character.stats;
+    return character.stats[key] + character.chosen_stats_bonuses[key];
+}
+
 
 const exportCharacter = () => {
     const exportObject = {
@@ -156,44 +161,44 @@ const toggleInspiration = () => {
             <div class="flex flex-col gap-3">
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.str!) }}
+                        getModifierFromAbility(getAbility("str")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.str }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("str")! }}</p>
                     <p class="font-bold">STR</p>
                 </div>
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.dex!) }}
+                        getModifierFromAbility(getAbility("dex")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.dex }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("dex")! }}</p>
                     <p class="font-bold">DEX</p>
                 </div>
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.con!) }}
+                        getModifierFromAbility(getAbility("con")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.con }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("con")! }}</p>
                     <p class="font-bold">CON</p>
                 </div>
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.int!) }}
+                        getModifierFromAbility(getAbility("int")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.int }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("con") }}</p>
                     <p class="font-bold">INT</p>
                 </div>
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.wis!) }}
+                        getModifierFromAbility(getAbility("wis")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.wis }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("wis") }}</p>
                     <p class="font-bold">WIS</p>
                 </div>
                 <div class="w-25 bg-white rounded-md shadow-xl p-2 flex flex-col justify-center items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">{{
-                        getModifierFromAbility(character?.stats.cha!) }}
+                        getModifierFromAbility(getAbility("cha")!) }}
                     </p>
-                    <p class="border aspect-square text-center rounded">{{ character?.stats.cha }}</p>
+                    <p class="border aspect-square text-center rounded">{{ getAbility("cha") }}</p>
                     <p class="font-bold">CHA</p>
                 </div>
 
@@ -233,9 +238,11 @@ const toggleInspiration = () => {
                                 <text x="50" y="48" text-anchor="middle" dominant-baseline="middle" font-size="36"
                                     font-weight="bold" fill="black">
                                     {{
-                                        10 + abilityToModifierLoookup.get(character.stats.dex)! + 
-                                        (character.class === ClassName.Barbarian ? abilityToModifierLoookup.get(character.stats.con)! : 0) + 
-                                        (character.class === ClassName.Barbarian ? abilityToModifierLoookup.get(character.stats.dex)! : 0)
+                                        10 + abilityToModifierLoookup.get(character.stats.dex)! +
+                                        (character.class === ClassName.Barbarian ?
+                                            abilityToModifierLoookup.get(character.stats.con)! : 0) +
+                                        (character.class === ClassName.Barbarian ?
+                                            abilityToModifierLoookup.get(character.stats.dex)! : 0)
                                     }}
                                 </text>
                             </svg>
