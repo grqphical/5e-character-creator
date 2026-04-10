@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '../storage';
+import races from "../Data/races.json"
 import { useHead } from '@unhead/vue'
+import { ClassName } from '../models';
 
 const characterStore = useCharacterStore();
 
@@ -9,6 +11,7 @@ const route = useRoute()
 const id = parseInt(route.params.id?.toString()!)
 
 const character = characterStore.characters[id]!;
+const currentRace = races.find((race) => race.name === character.race)
 
 if (character !== undefined) {
     useHead({
@@ -48,6 +51,29 @@ const abilityToModifierLoookup = new Map<number, number>([
     [29, 9],
     [25, 10],
 ])
+
+const proficiencyBonusLookup: Record<number, number> = {
+    1: 2,
+    2: 2,
+    3: 2,
+    4: 2,
+    5: 3,
+    6: 3,
+    7: 3,
+    8: 3,
+    9: 4,
+    10: 4,
+    11: 4,
+    12: 4,
+    13: 5,
+    14: 5,
+    15: 5,
+    16: 5,
+    17: 6,
+    18: 6,
+    19: 6,
+    20: 6,
+}
 
 const getModifierFromAbility = (abilityScore: number): string => {
     const modifier = abilityToModifierLoookup.get(abilityScore)
@@ -187,7 +213,7 @@ const toggleInspiration = () => {
                 </div>
                 <div class="w-60 bg-white rounded-md shadow-xl p-1 flex flex-row gap-2 items-center">
                     <p class="text-3xl border-2 rounded aspect-square text-center p-0.5 mb-1">+{{
-                        character.proficiency_bonus }}
+                        proficiencyBonusLookup[character.level] }}
                     </p>
                     <p class="font-bold">Proficency Bonus</p>
                 </div>
@@ -206,7 +232,11 @@ const toggleInspiration = () => {
                              Z" fill="none" stroke="black" stroke-width="6" stroke-linejoin="round" />
                                 <text x="50" y="48" text-anchor="middle" dominant-baseline="middle" font-size="36"
                                     font-weight="bold" fill="black">
-                                    {{ character.armor_class }}
+                                    {{
+                                        10 + abilityToModifierLoookup.get(character.stats.dex)! + 
+                                        (character.class === ClassName.Barbarian ? abilityToModifierLoookup.get(character.stats.con)! : 0) + 
+                                        (character.class === ClassName.Barbarian ? abilityToModifierLoookup.get(character.stats.dex)! : 0)
+                                    }}
                                 </text>
                             </svg>
                         </div>
@@ -216,7 +246,8 @@ const toggleInspiration = () => {
                     <div class="flex flex-col items-center gap-1">
                         <p
                             class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
-                            {{ character.initiative >= 0 ? "+" : "" }}{{ character.initiative }}
+                            {{ character.stats.dex >= 10 ? "+" : "" }}{{
+                                abilityToModifierLoookup.get(character.stats.dex) }}
                         </p>
                         <p class="text-sm font-bold">Initiative</p>
                     </div>
@@ -224,7 +255,7 @@ const toggleInspiration = () => {
                     <div class="flex flex-col items-center gap-1">
                         <p
                             class="text-3xl border-2 border-black p-3 rounded w-16 h-16 flex items-center justify-center text-center font-bold">
-                            {{ character.speed }}
+                            {{ typeof currentRace?.speed === 'object' ? currentRace.speed.walk : currentRace?.speed }}
                         </p>
                         <p class="text-sm font-bold">Speed</p>
                     </div>

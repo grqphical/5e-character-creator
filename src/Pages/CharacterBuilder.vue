@@ -25,45 +25,7 @@ const character = reactive<Character>({
     },
     xp: 0,
     inspiration: false,
-    proficiency_bonus: 0,
-    speed: 0,
-    initiative: 0,
-    armor_class: 0,
 } as Character)
-
-
-const abilityToModifierLoookup = new Map<number, number>([
-    [1, -5],
-    [2, -4],
-    [3, -4],
-    [4, -3],
-    [5, -3],
-    [6, -2],
-    [7, -2],
-    [8, -1],
-    [9, -1],
-    [10, 0],
-    [11, 0],
-    [12, 1],
-    [13, 1],
-    [14, 2],
-    [15, 2],
-    [16, 3],
-    [17, 3],
-    [18, 4],
-    [19, 4],
-    [20, 5],
-    [21, 5],
-    [22, 6],
-    [23, 6],
-    [24, 7],
-    [25, 7],
-    [26, 8],
-    [27, 8],
-    [28, 9],
-    [29, 9],
-    [25, 10],
-])
 
 
 const handleSubmit = (e: Event) => {
@@ -73,21 +35,6 @@ const handleSubmit = (e: Event) => {
         const key = stat as keyof typeof character.stats
         character.stats[key] += value
     })
-
-    character.armor_class = 10 + abilityToModifierLoookup.get(character.stats.dex)!
-
-    const race = races.find((value) => value.name === character.race)!
-    if (race === undefined) {
-        console.error("Error looking up race data")
-    }
-
-    if (typeof (race.speed) === "number") {
-        character.speed = race.speed;
-    } else {
-        character.speed = race.speed?.walk!
-    }
-
-    character.initiative = abilityToModifierLoookup.get(character.stats.dex)!
 
     charactersStore.addCharacter(character)
     const idx = charactersStore.characters.length - 1;
@@ -104,29 +51,6 @@ let pointBuyPrices: Record<number, number> = {
     13: 5,
     14: 7,
     15: 9
-}
-
-const proficiencyBonusLookup: Record<number, number> = {
-    1: 2,
-    2: 2,
-    3: 2,
-    4: 2,
-    5: 3,
-    6: 3,
-    7: 3,
-    8: 3,
-    9: 4,
-    10: 4,
-    11: 4,
-    12: 4,
-    13: 5,
-    14: 5,
-    15: 5,
-    16: 5,
-    17: 6,
-    18: 6,
-    19: 6,
-    20: 6,
 }
 
 let preBonusStats = reactive({
@@ -187,11 +111,6 @@ const filteredRacialBonuses = computed(() => {
     );
 });
 
-const handleLevelChange = () => {
-    const profBonus = proficiencyBonusLookup[character.level];
-    character.proficiency_bonus = profBonus!;
-}
-
 const handleDynamicAbilityChange = (payload: Event) => {
     const target = payload.target as HTMLSelectElement;
     const selectedAbility = target.value as keyof typeof character.stats;
@@ -233,7 +152,7 @@ applyRacialBonuses();
 
             <div class="flex flex-col gap-1">
                 <label for="level" class="text-xl">Level:</label>
-                <input v-bind:value="character.level" @change="handleLevelChange" type="number"
+                <input v-bind:value="character.level" type="number"
                     class="bg-gray-200 p-1 rounded-md w-1/3" max="20" min="1" required>
             </div>
             <div class="flex flex-col gap-1">
